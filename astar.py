@@ -24,7 +24,7 @@ class MyGame(arcade.Window):
         arcade.set_background_color(arcade.color.BLACK)
         self.maxW = int((SCREEN_WIDTH - 2*SCREEN_MARGIN) / BOX_SIZE)
         self.maxH = int((SCREEN_HEIGHT - 2*SCREEN_MARGIN) / BOX_SIZE)
-        self.map = []
+        self.map: list[list[Box]] = []
         self.start = self.end = None
         self.newRoute = False
         self.searching = False
@@ -32,11 +32,15 @@ class MyGame(arcade.Window):
     def setup(self):
         # Set up your game here
         for y in range(self.maxH):
-            row = []
+            row: list[Box] = []
             for x in range(self.maxW):
                 row.append(Box(x, y, BOX_SIZE, self.map))
             self.map.append(row)
-        self.map[2][2].connect(self.map[2][3])
+        self.start = self.map[3][3]
+        self.end = self.map[6][12]
+        self.start.setType(BoxType.START)
+        self.end.setType(BoxType.END)
+        self.showRoute()
 
     def run(self):
         arcade.run()
@@ -56,6 +60,7 @@ class MyGame(arcade.Window):
                 arcade.draw_line(
                     box.mx, box.my, self.route[i].mx, self.route[i].my, arcade.color.YELLOW, 3)
                 i += 1
+        # arcade.finish_render()
 
     def showRoute(self):
         pathFinder = PathFinder(self.start, self.end)

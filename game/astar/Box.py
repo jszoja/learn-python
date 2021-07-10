@@ -54,11 +54,11 @@ class Box(PathNodeInterface):
             BoxType.DEFAULT, BoxType.CHECKED] else BoxType.DEFAULT
         self.colour = self.type.value
 
-    def setType(self, type):
+    def setType(self, type: BoxType):
         self.colour = type.value
         self.type = type
 
-    def getDistance(self, target):
+    def getDistance(self, target: "Box") -> float:
         dx = self.x-target.x
         dy = self.y-target.y
         return math.sqrt(dx*dx+dy*dy)
@@ -66,7 +66,7 @@ class Box(PathNodeInterface):
     def markChecked(self):
         return self.setType(BoxType.CHECKED)
 
-    def getNeighbours(self):
+    def getNeighbours(self) -> "list[Box]":
         neighbours = []
         if self.y > 0 and self.map[self.y-1][self.x].type != BoxType.WALL:
             neighbours.append(self.map[self.y-1][self.x])
